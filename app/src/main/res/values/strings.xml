@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ImageCard</string>
+    <string name="image_url">image_url</string>
+</resources>
