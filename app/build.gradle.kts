@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -61,8 +63,24 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
 
+    //Navigation
+    implementation(libs.androidx.navigation)
+
     //Coil
     implementation(libs.coil.compose)
+
+    //Network
+    implementation(libs.squareup.retrofit)
+    implementation(libs.squareup.moshi.kotlin)
+    implementation(libs.squareup.moshi.kotlin.codegen)
+    implementation(libs.converter.moshi)
+    implementation(libs.squareup.okhttp)
+    implementation(libs.squareup.okhttp.logging.interceptor)
+
+    //Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    kapt(libs.hilt.android.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
@@ -71,4 +89,8 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+}
+
+kapt {
+    correctErrorTypes = true
 }
