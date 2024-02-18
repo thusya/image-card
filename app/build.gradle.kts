@@ -24,7 +24,19 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField(
+                type = "String",
+                name = "API_BASE_URL",
+                value =  "\"${project.properties["baseUrl"]}\""
+            )
+        }
         release {
+            buildConfigField(
+                type = "String",
+                name = "API_BASE_URL",
+                value =  "\"${project.properties["baseUrl"]}\""
+            )
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -41,6 +53,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.androidx.compose.kotlin.compiler.get()
