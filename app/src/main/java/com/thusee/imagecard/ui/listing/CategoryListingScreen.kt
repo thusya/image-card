@@ -3,9 +3,12 @@ package com.thusee.imagecard.ui.listing
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -13,28 +16,39 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.thusee.imagecard.domain.model.Category
 import com.thusee.imagecard.domain.model.Product
 import com.thusee.imagecard.domain.model.SalePrice
+import com.thusee.imagecard.ui.navigation.NavigationScreen
 import timber.log.Timber
 
 @Composable
 fun CategoryListingScreen(
     modifier: Modifier = Modifier,
-    viewModel: ListingViewModel = hiltViewModel()
+    viewModel: SharedViewModel,
+    navController: NavController
 ) {
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.safeDrawing)
+    ) {
         val categoryState = viewModel.categoryState.collectAsState()
 
         when (val state = categoryState.value) {
             is UIState.Loading -> {}
             is UIState.Success -> {
                 Timber.d("Response : ${state.data}")
-                ProductList(state.data)
+                ProductList(
+                    categories = state.data,
+                    navController = navController,
+                    viewModel = viewModel
+                )
             }
 
             is UIState.Error -> {
@@ -49,7 +63,9 @@ fun CategoryListingScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductList(
-    categories: List<Category>
+    categories: List<Category>,
+    navController: NavController? = null,
+    viewModel: SharedViewModel? = null,
 ) {
     LazyColumn {
         categories.forEach { category ->
@@ -64,14 +80,21 @@ fun ProductList(
                         modifier = Modifier
                             .fillMaxWidth(),
                         text = category.name,
-                        style = MaterialTheme.typography.headlineSmall,
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            fontWeight = FontWeight.SemiBold
+                        ),
                         overflow = TextOverflow.Ellipsis
                     )
                 }
             }
 
             items(category.products) { product ->
-                ProductCardItem(product = product)
+                ProductCardItem(product = product) {
+                    viewModel?.selectProduct(it)
+                    navController?.navigate(
+                        route = NavigationScreen.Details.route
+                    )
+                }
             }
         }
     }
