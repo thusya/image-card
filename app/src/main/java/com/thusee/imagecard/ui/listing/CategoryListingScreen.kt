@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,7 +25,10 @@ import androidx.navigation.NavController
 import com.thusee.imagecard.domain.model.Category
 import com.thusee.imagecard.domain.model.Product
 import com.thusee.imagecard.domain.model.SalePrice
+import com.thusee.imagecard.ui.common.ErrorScreen
+import com.thusee.imagecard.ui.common.LoadingScreen
 import com.thusee.imagecard.ui.navigation.NavigationScreen
+import com.thusee.imagecard.ui.util.ErrorHandler.getErrorMessage
 import timber.log.Timber
 
 @Composable
@@ -39,9 +43,12 @@ fun CategoryListingScreen(
             .windowInsetsPadding(WindowInsets.safeDrawing)
     ) {
         val categoryState = viewModel.categoryState.collectAsState()
-
+        val context = LocalContext.current
         when (val state = categoryState.value) {
-            is UIState.Loading -> {}
+            is UIState.Loading -> {
+                LoadingScreen()
+            }
+
             is UIState.Success -> {
                 Timber.d("Response : ${state.data}")
                 ProductList(
@@ -52,6 +59,8 @@ fun CategoryListingScreen(
             }
 
             is UIState.Error -> {
+                val message = getErrorMessage(context, state.exception)
+                ErrorScreen(message = message)
                 Timber.d("Error ${state.exception.message}")
             }
 

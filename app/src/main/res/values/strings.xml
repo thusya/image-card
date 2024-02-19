@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">ImageCard</string>
     <string name="image_url">image_url</string>
+
+    <string name="error_title">We have encountered and error</string>
+    <string name="error_no_network">Please check your internet connection and try again</string>
+    <string name="error_server_down">Oops! Something went wrong on our server. Please try again later.</string>
+    <string name="error_page_not_found">Sorry, the page you\'re looking for could not be found.</string>
+    <string name="error_common">Oops! Something went wrong. Please try again later.</string>
 </resources>
