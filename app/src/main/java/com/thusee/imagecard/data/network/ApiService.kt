@@ -5,6 +5,6 @@ import retrofit2.http.GET
 
 interface ApiService {
 
-    @GET
-    suspend fun getCategories(): CategoryResponse
+    @GET("/")
+    suspend fun getCategories(): List<CategoryResponse>
 }

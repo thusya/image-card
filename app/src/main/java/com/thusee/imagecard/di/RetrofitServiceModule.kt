@@ -32,7 +32,7 @@ object RetrofitServiceModule {
 
     @Provides
     fun provideMoshiConverterFactory(moshi: Moshi): MoshiConverterFactory =
-        MoshiConverterFactory.create()
+        MoshiConverterFactory.create(moshi)
 
     @Provides
     @Singleton
