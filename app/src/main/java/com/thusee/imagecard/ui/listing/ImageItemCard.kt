@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,40 +22,33 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.thusee.imagecard.BuildConfig
 import com.thusee.imagecard.R
-import timber.log.Timber
+import com.thusee.imagecard.domain.model.Product
 
 @Composable
-fun ImageItemCard(
+fun ProductCardItem(
     modifier: Modifier = Modifier,
-    imageURL: String,
-    viewModel: ListingViewModel = hiltViewModel()
+    product: Product,
+    onItemClick: () -> Unit = {}
 ) {
 
-    val categoryState = viewModel.categoryState.collectAsState()
-
-    when (val state = categoryState.value) {
-        is UIState.Loading -> {}
-        is UIState.Success -> {
-            Timber.d("Response : ${state.data}")
-        }
-
-        is UIState.Error -> {
-            Timber.d("Error ${state.exception.message}")
-        }
-
-        is UIState.Empty -> {}
-    }
-
     Box(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(
+                horizontal = 16.dp,
+                vertical = 10.dp
+            ),
         contentAlignment = Alignment.Center
     ) {
         OutlinedCard(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ }) {
+            colors = CardDefaults.elevatedCardColors(
+                MaterialTheme.colorScheme.inverseOnSurface
+            ),
+            onClick = { onItemClick.invoke() }) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -63,8 +56,11 @@ fun ImageItemCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                val imageUrl =
+                    BuildConfig.API_BASE_URL.trimEnd('/') + "/" + product.url.trimStart('/')
+
                 AsyncImage(
-                    model = imageURL,
+                    model = imageUrl,
                     contentDescription = stringResource(id = R.string.image_url),
                     modifier = Modifier
                         .size(80.dp)
@@ -76,8 +72,10 @@ fun ImageItemCard(
                 )
 
                 Text(
-                    text = "Food name",
-                    style = MaterialTheme.typography.bodyLarge,
+                    text = product.name,
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        color = MaterialTheme.colorScheme.onBackground
+                    ),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )
@@ -89,7 +87,13 @@ fun ImageItemCard(
 @Composable
 @Preview
 fun ImageItemCardPreview() {
-    ImageItemCard(
-        imageURL = ""
+
+    val product = Product(
+        id = "123",
+        name = "Product test name"
+    )
+
+    ProductCardItem(
+        product = product
     )
 }

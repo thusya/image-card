@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.thusee.imagecard.ui.listing.ImageItemCard
+import com.thusee.imagecard.ui.listing.CategoryListingScreen
 import com.thusee.imagecard.ui.theme.ImageCardTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,7 +21,9 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
-                ) { ImageItemCard(imageURL = "") }
+                ) {
+                    CategoryListingScreen()
+                }
             }
         }
     }

@@ -17,7 +17,7 @@ class ListingViewModel @Inject constructor(
     private val repository: CategoryRepository
 ) : ViewModel() {
 
-    private val _categoryState = MutableStateFlow<UIState<List<Category>>>(UIState.Loading)
+    private val _categoryState = MutableStateFlow<UIState>(UIState.Loading)
     val categoryState = _categoryState.asStateFlow()
 
     init {
@@ -29,15 +29,19 @@ class ListingViewModel @Inject constructor(
             repository.getCategory().catch { e ->
                 _categoryState.value = UIState.Error(e)
             }.collectLatest { result ->
-                _categoryState.value = UIState.Success(result)
+                if (result.isEmpty()){
+                    _categoryState.value = UIState.Empty
+                }else {
+                    _categoryState.value = UIState.Success(result)
+                }
             }
         }
     }
 }
 
-sealed class UIState<out T> {
-    data object Loading : UIState<Nothing>()
-    data class Success<T>(val data: T) : UIState<T>()
-    data class Error(val exception: Throwable) : UIState<Nothing>()
-    data object Empty : UIState<Nothing>()
+sealed class UIState {
+    data object Loading : UIState()
+    data class Success(val data: List<Category>) : UIState()
+    data class Error(val exception: Throwable) : UIState()
+    data object Empty : UIState()
 }
