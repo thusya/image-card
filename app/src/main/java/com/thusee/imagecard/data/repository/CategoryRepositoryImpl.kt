@@ -11,7 +11,7 @@ import javax.inject.Inject
 class CategoryRepositoryImpl @Inject constructor(private val apiService: ApiService) :
     CategoryRepository {
 
-    override suspend fun getCategory(): Flow<List<Category>> = flow {
+    override fun getCategory(): Flow<List<Category>> = flow {
         val result = apiService.getCategories().map { it.toCategory() }
         emit(result)
     }
