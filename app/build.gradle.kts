@@ -69,16 +69,6 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs> {
-//    kotlinOptions {
-//        jvmTarget = "17"
-//    }
-//}
-//
-//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-//    kotlinOptions.jvmTarget = "17"
-//}
-
 dependencies {
 
     implementation(libs.core.ktx)
@@ -111,14 +101,6 @@ dependencies {
 
     //Timber for logging
     implementation(libs.jakewharton.timber)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.ui.test.junit4)
-    debugImplementation(libs.ui.tooling)
-    debugImplementation(libs.ui.test.manifest)
 
     // JUnit5
     testImplementation(libs.junit.jupiter)
