@@ -28,14 +28,14 @@ android {
             buildConfigField(
                 type = "String",
                 name = "API_BASE_URL",
-                value =  "\"${project.properties["baseUrl"]}\""
+                value = "\"${project.properties["baseUrl"]}\""
             )
         }
         release {
             buildConfigField(
                 type = "String",
                 name = "API_BASE_URL",
-                value =  "\"${project.properties["baseUrl"]}\""
+                value = "\"${project.properties["baseUrl"]}\""
             )
             isMinifyEnabled = false
             proguardFiles(
@@ -64,6 +64,20 @@ android {
         }
     }
 }
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
+//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs> {
+//    kotlinOptions {
+//        jvmTarget = "17"
+//    }
+//}
+//
+//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+//    kotlinOptions.jvmTarget = "17"
+//}
 
 dependencies {
 
@@ -105,6 +119,19 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+
+    // JUnit5
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
+    testImplementation(libs.junit.jupiter.parametrized)
+    androidTestImplementation(libs.junit.jupiter)
+
+    //Coroutines Test
+    testImplementation(libs.kotlinx.coroutines.test)
+
+    // mockk
+    testImplementation(libs.mockk)
 }
 
 kapt {
