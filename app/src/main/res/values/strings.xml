@@ -7,4 +7,6 @@
     <string name="error_server_down">Oops! Something went wrong on our server. Please try again later.</string>
     <string name="error_page_not_found">Sorry, the page you\'re looking for could not be found.</string>
     <string name="error_common">Oops! Something went wrong. Please try again later.</string>
+    <string name="product_details">Product Details</string>
+    <string name="back">Back</string>
 </resources>
