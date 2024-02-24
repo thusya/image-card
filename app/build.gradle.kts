@@ -2,7 +2,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
 
@@ -97,7 +97,7 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
 
     //Timber for logging
     implementation(libs.jakewharton.timber)
@@ -114,8 +114,4 @@ dependencies {
 
     // mockk
     testImplementation(libs.mockk)
-}
-
-kapt {
-    correctErrorTypes = true
 }
